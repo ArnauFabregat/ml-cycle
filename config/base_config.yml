@@ -1,0 +1,67 @@
+"""
+mlcycle config.yml
+"""
+
+target_type: classification
+
+# Optuna
+optuna:
+  create_study:
+    study_name: 00-example
+    direction: maximize
+  run:
+    n_trials: 10
+
+# Feature engineering pipeline
+features:
+  outliers:
+    1:
+      features: ['mean smoothness', 'mean radius']
+      transformers:
+        CustomWinsorizer:
+          capping_method: ['gaussian','iqr']
+          add_indicators: True
+          missing_values: ignore
+          outliers_to_nan: True
+      if_optuna: True
+    2:
+      features: ['mean area']
+      transformers:
+        LogTransformer:
+          base: ['e','10']
+      if_optuna: True
+
+  imputers:
+   1:
+      features: ['mean smoothness', 'mean radius']
+      transformers:
+        KNNImputer:
+          n_neighbors: (2, 5, 1)
+        ArbitraryNumberImputer:
+          arbitrary_number: -999
+      if_optuna: True
+
+# Estimator pipeline
+estimator:
+  estimator_name: RandomForestClassifier
+  params:
+    n_estimators: (50, 400, 50)
+  if_optuna: True
+
+cv_technique:
+  cv_name: StratifiedKFold
+  params:
+    n_splits: 5
+    shuffle: True
+    random_state: 12345
+  metric:
+    name: fbeta_score
+    params:
+      beta: 1
+      average: binary
+
+# Test
+if_test: True
+
+# Serving
+if_serving: True

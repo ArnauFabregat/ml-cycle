@@ -1,0 +1,46 @@
+# mkdocs.yml
+
+site_name: ML CYCLE
+site_description: ML problems framework.
+site_author: AIA Capgemini I&D
+use_directory_urls: false
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - search.highlight
+
+plugins:
+  - mkdocstrings
+  - mkdocs-jupyter:
+      ignore_h1_titles: False
+      include_source: True
+  - search:
+      lang: en
+
+nav:
+  - Home: index.md
+  - Deploy: deploy/README.md
+  - API Reference:
+    - Feature Engineering:
+      - Aggregations: modules/feature_engineering/aggregate.md
+      - Imputations: modules/feature_engineering/imputation.md
+      - Outliers handling: modules/feature_engineering/outliers.md
+    - Modeling:
+      - Estimators: modules/modeling/estimators.md
+      - Hyperparameter tunning: modules/modeling/hyp_tunning.md
+      - Cross-validation: modules/modeling/cv_and_metrics.md
+    - Evaluation:
+      - Feature importance: modules/evaluation/feature_importance.md
+      - Probability calibration: modules/evaluation/probability_calibration.md
+    - Base classes and utility funcions: modules/utils/base_classes.md
+  - User Guides:
+    - Feature engineering:
+      - Pipeline transformers: user_guides/feature_engineering/UC_feature_engineering.ipynb
+    - Modeling: user_guides/modeling/UC_modeling.ipynb
+    - Evaluation:
+      - Probability calibration: user_guides/evaluation/UC_probability_calibration.ipynb
+      - Feature importance: user_guides/evaluation/UC_shap_values.ipynb
+  - Releases: versions/releases.md
